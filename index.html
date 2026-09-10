@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore a developer's public GitHub profile, standout repositories, and programming languages with DevPulse.">
+  <meta name="color-scheme" content="dark light">
+  <title>DevPulse — GitHub Developer Dashboard</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+  <header class="site-header wrap">
+    <a class="brand" href="./" aria-label="DevPulse home"><span class="brand-icon" aria-hidden="true">⌁</span> DevPulse<span class="brand-dot">.</span></a>
+    <div class="header-actions"><span class="header-label">GITHUB DEVELOPER DASHBOARD</span><button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to light theme">☀</button></div>
+  </header>
+  <main id="main" class="wrap">
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">A WINDOW INTO YOUR CODE</p><h1 id="page-title">Good code has a story<span>.</span></h1><p class="intro-copy">Discover the people, projects, and languages behind a GitHub profile.</p></div>
+      <div class="intro-mark" aria-hidden="true">&lt;<span>/</span>&gt;</div>
+    </section>
+    <section class="search-section" aria-label="Find a developer">
+      <form id="search-form" novalidate>
+        <label class="sr-only" for="username">GitHub username</label>
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input id="username" name="username" type="text" placeholder="Enter a GitHub username…" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="39" aria-describedby="search-help">
+        <button class="primary-button" type="submit">Explore profile <span aria-hidden="true">↗</span></button>
+      </form>
+      <div class="search-help" id="search-help"><span>Start exploring</span><button type="button" data-user="octocat">@octocat</button><button type="button" data-user="sindresorhus">@sindresorhus</button><button type="button" data-user="torvalds">@torvalds</button><span class="public-note">Public profiles. No sign-in.</span></div>
+    </section>
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="error-panel" class="message-panel" role="alert" hidden><span class="message-icon" aria-hidden="true">!</span><div><h2 id="error-title">Something went wrong</h2><p id="error-message"></p><button id="retry" class="text-button" type="button">Try again ↗</button></div></section>
+    <section id="loading" aria-label="Loading profile" hidden><div class="loading-grid"><div class="skeleton skeleton-profile"></div><div><div class="skeleton skeleton-stats"></div><div class="skeleton skeleton-repos"></div></div></div></section>
+    <section id="welcome" class="welcome"><div class="welcome-code" aria-hidden="true">{ <span>you</span> }</div><h2>Every developer starts somewhere.</h2><p>Search a username to see their open-source story unfold.</p><button type="button" class="text-button" data-user="octocat">Take a look at @octocat ↗</button></section>
+    <section id="dashboard" aria-label="Developer dashboard" hidden>
+      <div class="section-heading"><h2>Developer overview</h2><span id="data-note" class="small-label"></span></div>
+      <div class="dashboard-grid">
+        <aside class="profile-card panel"><div class="profile-topline"><span class="eyebrow">THE DEVELOPER</span><span aria-hidden="true">↗</span></div><img id="avatar" width="96" height="96" alt=""><h2 id="profile-name"></h2><a id="profile-handle" class="handle" target="_blank" rel="noopener noreferrer"></a><p id="bio" class="bio"></p><div class="profile-details"><p id="location"></p><p id="joined"></p></div><div class="social-stats"><div><strong id="followers"></strong><span>Followers</span></div><div><strong id="following"></strong><span>Following</span></div></div><a id="github-link" class="outline-button" target="_blank" rel="noopener noreferrer">View on GitHub <span aria-hidden="true">↗</span></a><div class="profile-decoration" aria-hidden="true">{ build. share. repeat. }</div></aside>
+        <div class="main-column">
+          <div class="stats-grid"><article class="stat-card"><span class="stat-icon" aria-hidden="true">▤</span><p>Public repositories</p><strong id="repo-count"></strong><span class="stat-caption">On this profile</span></article><article class="stat-card"><span class="stat-icon" aria-hidden="true">☆</span><p>Total stars</p><strong id="star-count"></strong><span class="stat-caption">Across loaded repositories</span></article><article class="stat-card"><span class="stat-icon" aria-hidden="true">⑂</span><p>Total forks</p><strong id="fork-count"></strong><span class="stat-caption">Across loaded repositories</span></article></div>
+          <section class="language-panel panel" aria-labelledby="language-title"><div class="section-heading"><h2 id="language-title">Language mix</h2><span class="small-label">BY REPOSITORY</span></div><div id="language-bar" class="language-bar" aria-hidden="true"></div><div id="language-list" class="language-list"></div><p class="fine-print">Primary language per loaded repository. Not lines of code; unclassified repositories excluded.</p></section>
+          <section aria-labelledby="repos-title"><div class="section-heading repos-heading"><h2 id="repos-title">Top repositories <span id="shown-count" class="count-badge"></span></h2><span class="small-label">RANKED BY STARS</span></div><div id="repositories" class="repository-grid"></div></section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="wrap"><span class="footer-brand">DevPulse<span>.</span></span><p>Built for curious developers.</p><a href="https://docs.github.com/en/rest" target="_blank" rel="noopener noreferrer">Powered by GitHub API ↗</a></footer>
+  <noscript><p class="message-panel">Please enable JavaScript to search GitHub profiles.</p></noscript>
+</body>
+</html>
