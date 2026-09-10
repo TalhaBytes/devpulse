@@ -1,89 +1,142 @@
 # DevPulse — GitHub Developer Dashboard
 
-A responsive dashboard that turns public GitHub profiles into a clear picture of a developer's repositories, community reach, and programming languages. Built from scratch with HTML, CSS, and vanilla JavaScript.
+A responsive web application that transforms public GitHub profiles into a clear and interactive developer dashboard. DevPulse displays profile information, repository statistics, programming-language usage, stars, forks, and top repositories using the public GitHub REST API.
+
+## Live Demo
+
+**[Open DevPulse](https://talhabytes.github.io/devpulse/)**
+
+## GitHub Repository
+
+**[View Source Code](https://github.com/TalhaBytes/devpulse)**
 
 ## Features
 
-- Search any public GitHub username, with optional `@` prefix and example profiles.
-- Profile avatar, name, bio, location, join date, followers, following, and public repository count.
-- Six top repositories ranked by stars, with forks as a tie-breaker, then repository name.
-- Repository descriptions, language labels, stars, forks, and archived/fork badges.
-- Total stars and forks across the loaded repositories.
-- Proportional language bar and percentages based on each repository's primary language.
-- Dark and light themes, initially matching the device and remembering your choice when storage is available.
-- Responsive desktop and mobile layouts, keyboard controls, visible focus, skip link, live announcements, and reduced-motion support.
-- Loading skeletons, empty states, input validation, missing-user errors, timeout/network handling, rate-limit messages, and retry.
-- Abort superseded searches and reuse recent results for five minutes in memory.
+- Search any public GitHub username with support for an optional `@` prefix.
+- Display profile avatar, name, username, bio, location, join date, followers, following, and public repository count.
+- Show the six top repositories ranked by stars, with forks and repository name used as tie-breakers.
+- Display repository descriptions, primary languages, stars, forks, and archived/fork status.
+- Calculate total stars and forks across loaded repositories.
+- Generate a proportional programming-language distribution with percentages.
+- Support dark and light themes with saved theme preference.
+- Provide responsive layouts for desktop, tablet, and mobile devices.
+- Include keyboard navigation, visible focus states, skip links, live announcements, and reduced-motion support.
+- Display loading skeletons and informative empty states.
+- Handle invalid usernames, missing users, network failures, API timeouts, and GitHub rate limits.
+- Abort superseded searches when a new username is entered.
+- Cache recently loaded profiles for five minutes to reduce unnecessary API requests.
 
-## Tech stack
+## Tech Stack
 
 | Layer | Technology |
 | --- | --- |
 | Structure | Semantic HTML5 |
-| Styling | CSS custom properties, Grid, Flexbox, media queries |
-| Interaction | Vanilla JavaScript, Fetch API, AbortController, DOM API |
-| Data | Public GitHub REST API |
-| Preferences | Optional localStorage for the theme only |
-| Hosting | Any static server or GitHub Pages |
+| Styling | CSS Custom Properties, Grid, Flexbox, Media Queries |
+| Interaction | Vanilla JavaScript |
+| API Communication | Fetch API, AbortController |
+| Data | GitHub REST API |
+| Preferences | LocalStorage |
+| Hosting | GitHub Pages |
+| Version Control | Git & GitHub |
 
-No React, Node.js, database, package installation, API key, build process, or external UI library is required. Fonts use the operating system's installed fonts.
+DevPulse does not require React, Node.js, a database, package installation, API keys, or a build process. The entire application runs directly in the browser.
 
-## Project structure
+## Project Structure
 
 ```text
 devpulse/
 ├── index.html
+│
 ├── css/
 │   └── style.css
+│
 ├── js/
 │   └── app.js
+│
 ├── assets/
 │   ├── favicon.svg
 │   └── screenshots/
-│       └── README.md
+│       ├── desktop-dark.png
+│       ├── desktop-light.png
+│       └── mobile.png
+│
 ├── .gitignore
 ├── .nojekyll
+├── LICENSE
 ├── README.md
-└── LICENSE
+└── VERIFICATION.md
 ```
 
-## Local setup
+## Local Setup
 
-1. Download/extract this project, or clone your own copy of the repository.
-2. Open a terminal in the `devpulse` directory containing `index.html`.
-3. Start a static server with Python 3:
+### 1. Clone the repository
 
-   ```sh
-   python -m http.server 8000 --bind 127.0.0.1
-   ```
+```sh
+git clone https://github.com/TalhaBytes/devpulse.git
+```
 
-   On Windows, `py -m http.server 8000 --bind 127.0.0.1` also works when the Python launcher is installed. On macOS/Linux, your command may be `python3`.
+### 2. Open the project directory
 
-4. Open [http://localhost:8000](http://localhost:8000).
-5. Stop the server with `Ctrl+C` when finished.
+```sh
+cd devpulse
+```
 
-Alternatively, open the folder in VS Code and use its Live Server extension. Python only serves files during development; the website itself runs entirely in the browser. An internet connection is needed for GitHub data and avatars.
+### 3. Start a local server
+
+Using Python:
+
+```sh
+python -m http.server 8000 --bind 127.0.0.1
+```
+
+On Windows, you can also use:
+
+```sh
+py -m http.server 8000 --bind 127.0.0.1
+```
+
+### 4. Open DevPulse
+
+Visit:
+
+```text
+http://localhost:8000
+```
+
+### 5. Stop the server
+
+Press:
+
+```text
+Ctrl + C
+```
+
+You can also use a VS Code development server if preferred.
+
+An internet connection is required because DevPulse retrieves public profile and repository information directly from GitHub.
 
 ## Usage
 
-Enter a username, such as `octocat`, and select **Explore profile** or press Enter. You can also choose an example below the search box. View the overview, language mix, and top six repositories, then follow repository links to GitHub. Use the sun/moon button in the header to switch themes.
+Enter a GitHub username such as:
 
-For failed requests, read the error message and select **Try again**, or search another username. Searching again can replace an in-progress search without waiting for it to finish.
+```text
+octocat
+```
 
-## Data definitions and limitations
+Then select **Explore Profile** or press **Enter**.
 
-- Profiles come from `GET /users/{username}`; repositories come from `GET /users/{username}/repos?type=owner&sort=updated&per_page=100&page={page}`.
-- Repository pages are fetched sequentially using GitHub's `Link` pagination metadata, up to 10 pages (1,000 repositories). Large profiles display a partial-coverage notice. Their stars, forks, language mix, and rankings cover only the loaded subset. The profile's public-repository count remains GitHub's reported count.
-- Totals include owned public repositories, including forks and archived repositories. They exclude private repositories and contributions to repositories owned by other accounts. Stars means stars **received**, not repositories the person has starred.
-- Overview totals of 10,000 or more use compact notation for readability. Hover over a total for the exact value; assistive technology also receives the exact value.
-- Language percentages count repositories with a non-null primary language. Each contributes once; this is not a code-volume measurement. Percentages are rounded independently and may not add to exactly 100%.
-- The API is unauthenticated. GitHub normally allows 60 requests per hour per originating IP, which may be shared by other users. A successful uncached search uses one profile request plus one request per repository page. Error messages honor the reset time when GitHub supplies it. See [GitHub rate limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
-- Results are cached in the current tab for five minutes, up to 15 profiles. Reloading clears the cache; Retry bypasses it. GitHub data can change while pagination is in progress.
-- Each request times out after 15 seconds. If a page fails, the dashboard shows an error rather than reporting incomplete totals as complete.
-- All profile and repository text is inserted as text, not interpreted HTML. No credentials are collected. Requests go directly from your browser to GitHub; avatars load from GitHub's image service.
-- DevPulse is an independent project and is not affiliated with GitHub. Profile popularity metrics are not measures of developer ability.
+DevPulse retrieves the user's public GitHub information and displays:
 
-API reference: [GitHub repository endpoints](https://docs.github.com/en/rest/repos/repos#list-repositories-for-a-user).
+- Developer profile information
+- Followers and following
+- Public repositories
+- Total stars received
+- Total repository forks
+- Programming-language distribution
+- Top repositories
+- Repository links
+
+The theme button in the header can be used to switch between dark and light modes.
 
 ## Screenshots
 
@@ -99,36 +152,170 @@ API reference: [GitHub repository endpoints](https://docs.github.com/en/rest/rep
 
 ![DevPulse Mobile View](assets/screenshots/mobile.png)
 
-## Deploy to GitHub Pages
+## GitHub API
 
-1. Create a public GitHub repository named `devpulse`.
-2. Upload the **contents** of this project's `devpulse` folder to the repository root. `index.html` must be at the root, not inside another `devpulse` directory. Include `.nojekyll`.
-3. Commit the files to `main`.
-4. Open the repository's **Settings → Pages**.
-5. Under **Build and deployment**, choose **Deploy from a branch**.
-6. Select **main**, choose **/(root)**, and click **Save**.
-7. Wait for the Pages deployment to finish, then open the URL shown in Settings. It normally looks like `https://YOUR-USERNAME.github.io/devpulse/`.
+DevPulse uses the public GitHub REST API.
 
-The relative CSS, JavaScript, and asset paths work under a GitHub Pages repository subpath. No environment variables or build command are needed. Subsequent pushes to `main` update the website.
+Profile information is retrieved using:
 
-See [GitHub's publishing-source instructions](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). If you see a 404, check that Pages finished deploying and `index.html` is in the selected publishing folder.
+```text
+GET /users/{username}
+```
 
-## Verification checklist
+Repository information is retrieved using:
 
-The delivered version passed 25 browser checks with controlled API responses, plus a successful live `octocat` search and desktop/mobile visual review. See [VERIFICATION.md](VERIFICATION.md) for coverage and limits. Use the following checklist when making changes:
+```text
+GET /users/{username}/repos
+```
 
-- Search `octocat`; compare profile values and repository links with GitHub.
-- Check that stars and forks totals cover all loaded pages and that top repositories are sorted correctly.
-- Search a missing username; verify a clear message and a working retry.
-- Submit blank input or a profile URL; verify validation.
-- Use an account with no repositories; verify zero totals and empty language/repository states.
-- Test a failed network request, API rate limit, and search replacement during loading.
-- Toggle the theme and reload; verify persistence.
-- Inspect at 390 px and desktop widths; use the keyboard and zoom the page to 200%.
+Repository pages are loaded sequentially using GitHub pagination metadata.
 
-## Customize
+The application currently supports loading up to:
 
-Edit the theme variables at the start of `css/style.css`, the text in `index.html`, and the example usernames in the `data-user` buttons. API behavior and the language palette live in `js/app.js`. Keep the repository-coverage notice if you change the pagination cap.
+```text
+1,000 repositories
+```
+
+for a profile.
+
+## Data Definitions and Limitations
+
+- Repository statistics cover public repositories owned by the selected GitHub user.
+- Private repositories are not accessible through the unauthenticated public API.
+- Contributions to repositories owned by other users or organizations are not included in repository totals.
+- Stars represent stars received by the user's loaded repositories.
+- Language percentages are calculated using each repository's primary language.
+- Language percentages represent repository distribution rather than source-code volume.
+- Archived repositories and forks may still contribute to displayed repository statistics.
+- GitHub profile and repository information may change between searches.
+
+## API Rate Limits
+
+DevPulse uses GitHub's API without authentication.
+
+GitHub normally permits a limited number of unauthenticated API requests per originating IP address.
+
+If the limit is reached, DevPulse displays an informative rate-limit message and uses GitHub's reset information when available.
+
+Recent successful searches are cached temporarily in the current browser tab to reduce unnecessary API requests.
+
+For additional information, see:
+
+[GitHub REST API Rate Limits](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
+
+## Error Handling
+
+DevPulse includes handling for:
+
+- Invalid usernames
+- Empty search input
+- Users that do not exist
+- Network failures
+- Request timeouts
+- GitHub API rate limits
+- Repository-loading failures
+- Searches replaced by newer searches
+
+Each request has a timeout to prevent the interface from waiting indefinitely.
+
+## Security and Privacy
+
+DevPulse does not collect GitHub credentials.
+
+All requests are made directly from the user's browser to GitHub's public REST API.
+
+Profile and repository content is inserted into the application as text rather than interpreted as HTML.
+
+No personal application database or backend server is used.
+
+DevPulse is an independent project and is not affiliated with GitHub.
+
+## Accessibility
+
+The interface includes several accessibility-focused features:
+
+- Semantic HTML
+- Keyboard navigation
+- Visible keyboard focus
+- Skip navigation link
+- Accessible status announcements
+- Responsive layouts
+- Reduced-motion support
+- Dark and light themes
+- Support for browser zoom
+
+## Responsive Design
+
+DevPulse is designed to work across:
+
+- Desktop computers
+- Laptops
+- Tablets
+- Mobile phones
+
+The interface automatically reorganizes its layout for smaller screen sizes.
+
+## Deployment
+
+DevPulse is deployed publicly using **GitHub Pages**.
+
+Live website:
+
+**https://talhabytes.github.io/devpulse/**
+
+The site is deployed directly from:
+
+```text
+main
+```
+
+using the repository root:
+
+```text
+/(root)
+```
+
+Because DevPulse is a static web application, no server-side deployment or build process is required.
+
+Updates pushed to the `main` branch can be automatically published through GitHub Pages.
+
+## Verification
+
+The project has been tested for:
+
+- GitHub profile searching
+- Profile information retrieval
+- Repository retrieval
+- Repository ranking
+- Stars and fork totals
+- Programming-language calculations
+- Missing-user handling
+- Invalid-input handling
+- Network-error handling
+- GitHub rate-limit handling
+- Theme persistence
+- Keyboard accessibility
+- Desktop responsiveness
+- Mobile responsiveness
+
+Additional testing information is available in:
+
+[VERIFICATION.md](VERIFICATION.md)
+
+## Future Improvements
+
+Possible future enhancements include:
+
+- GitHub authentication for higher API request limits
+- Contribution statistics
+- Commit activity visualization
+- Repository activity charts
+- Organization information
+- Repository filtering and sorting
+- Search history
+- Profile comparison
+- Shareable developer reports
+- Additional GitHub analytics
 
 ## Author
 
@@ -136,8 +323,8 @@ Edit the theme variables at the start of `css/style.css`, the text in `index.htm
 
 Computer Science student and developer.
 
-- GitHub: [Your GitHub Profile](https://github.com/TalhaBytes)
+GitHub: [TalhaBytes](https://github.com/TalhaBytes)
 
 ## License
 
-Released under the [MIT License](LICENSE).
+This project is released under the [MIT License](LICENSE).
